@@ -2,33 +2,62 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>India vs Pak</title>
+  <title>India vs Pak – 15 Feb</title>
+
   <style>
     body {
       height: 100vh;
+      margin: 0;
       display: flex;
       justify-content: center;
       align-items: center;
-      background: #0f172a;
-      font-family: Arial, sans-serif;
+      background: radial-gradient(circle at top, #ff2d2d, #7a0000, #2b0000);
+      font-family: 'Segoe UI', Arial, sans-serif;
       color: white;
       overflow: hidden;
     }
+
     .card {
       text-align: center;
-      background: #020617;
-      padding: 40px;
-      border-radius: 16px;
+      background: rgba(0, 0, 0, 0.55);
+      padding: 50px 40px;
+      border-radius: 20px;
+      box-shadow: 0 0 40px rgba(255, 0, 0, 0.6);
+      animation: pulse 3s infinite;
     }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 30px rgba(255,0,0,0.4); }
+      50% { box-shadow: 0 0 50px rgba(255,0,0,0.9); }
+      100% { box-shadow: 0 0 30px rgba(255,0,0,0.4); }
+    }
+
+    h1 {
+      margin-bottom: 30px;
+      font-size: 2.2rem;
+      line-height: 1.3;
+    }
+
     button {
-      padding: 12px 28px;
+      padding: 14px 34px;
       font-size: 18px;
-      border-radius: 8px;
+      border-radius: 10px;
       border: none;
       cursor: pointer;
       margin: 10px;
+      transition: transform 0.15s ease;
     }
-    #yes { background: #22c55e; }
+
+    button:hover {
+      transform: scale(1.08);
+    }
+
+    #yes {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      color: #022c22;
+      font-weight: bold;
+    }
+
     #no {
       background: #ef4444;
       color: white;
@@ -39,17 +68,34 @@
 <body>
 
   <div class="card">
-    <h1>Will Pakistan play on 15th Feb? 🇮🇳🇵🇰</h1>
-    <button id="yes" onclick="alert('Of course 😄')">YES</button>
+    <h1>Will Pakistan play on<br>15th Feb? 🇮🇳🇵🇰</h1>
+    <button id="yes">YES</button>
   </div>
 
   <button id="no">NO</button>
 
+  <!-- Jet sound -->
+  <audio id="jetSound">
+    <source src="https://www.soundjay.com/transportation/jet-flyby-01.mp3" type="audio/mpeg">
+  </audio>
+
   <script>
     const no = document.getElementById("no");
+    const yes = document.getElementById("yes");
+    const jet = document.getElementById("jetSound");
+
     no.addEventListener("mouseover", () => {
-      no.style.left = Math.random() * (window.innerWidth - 100) + "px";
-      no.style.top = Math.random() * (window.innerHeight - 50) + "px";
+      no.style.left = Math.random() * (window.innerWidth - 120) + "px";
+      no.style.top = Math.random() * (window.innerHeight - 60) + "px";
+    });
+
+    yes.addEventListener("click", () => {
+      jet.currentTime = 0;
+      jet.play();
+
+      setTimeout(() => {
+        alert("USSSSHHHH ✈️🇮🇳\n\nOf course they will 😄\nSee you on 15th Feb!");
+      }, 900);
     });
   </script>
 
