@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>India vs Pakistan 🇮🇳🇵🇰</title>
+<title>India vs Pak 🇮🇳🇵🇰</title>
 
 <style>
   body {
@@ -25,30 +25,29 @@
     z-index: 2;
   }
 
-  button {
+  #yes {
     padding: 12px 28px;
     font-size: 18px;
     border-radius: 8px;
     border: none;
     cursor: pointer;
-  }
-
-  #yes {
     background: #22c55e;
     font-weight: bold;
   }
 
-  /* NO as image */
+  /* NO button image */
   #no {
     position: absolute;
     background: none;
     border: none;
     padding: 0;
     cursor: pointer;
+    z-index: 4;
   }
 
   #no img {
-    width: 80px;
+    width: 90px;
+    pointer-events: none; /* 🔥 KEY FIX */
   }
 
   /* Dialog */
@@ -117,41 +116,26 @@
   const dialog = document.getElementById("dialog");
   const jet = document.getElementById("jet");
 
-  let audioUnlocked = false;
-
-  // 🔓 Unlock audio on first interaction (CRITICAL)
-  document.body.addEventListener("click", () => {
-    if (!audioUnlocked) {
-      jetSound.muted = true;
-      jetSound.play().then(() => {
-        jetSound.pause();
-        jetSound.muted = false;
-        audioUnlocked = true;
-      }).catch(() => {});
-    }
-  }, { once: true });
-
-  // NO button runs away
+  // 🚫 NO runs away
   noBtn.addEventListener("mouseenter", () => {
-    noBtn.style.left = Math.random() * (window.innerWidth - 100) + "px";
-    noBtn.style.top = Math.random() * (window.innerHeight - 100) + "px";
+    const x = Math.random() * (window.innerWidth - 120);
+    const y = Math.random() * (window.innerHeight - 120);
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
   });
 
   // YES click
   yesBtn.addEventListener("click", () => {
     dialog.style.display = "flex";
 
-    // Jet animation
     jet.style.display = "block";
     jet.style.animation = "none";
     jet.offsetHeight;
     jet.style.animation = "fly 1.6s linear forwards";
 
-    // 🔊 Sound (now works)
     jetSound.currentTime = 0;
     jetSound.play();
 
-    // 📳 Mobile vibration
     if (navigator.vibrate) {
       navigator.vibrate([200, 100, 200]);
     }
