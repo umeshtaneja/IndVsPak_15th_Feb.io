@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>India vs Pak – 15 Feb</title>
+  <title>India vs Pak 🇮🇳🇵🇰</title>
 
   <style>
     body {
@@ -11,29 +11,25 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background: linear-gradient(135deg, #8b0000, #ff2400);
+      background: linear-gradient(135deg, #7a0000, #c1121f);
       font-family: Arial, sans-serif;
       color: white;
       overflow: hidden;
+      cursor: url("jet.png"), auto;
     }
 
     .card {
       text-align: center;
-      background: rgba(0, 0, 0, 0.65);
+      background: rgba(0,0,0,0.5);
       padding: 40px;
-      border-radius: 18px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      border-radius: 16px;
       z-index: 2;
     }
 
-    h1 {
-      margin-bottom: 30px;
-    }
-
     button {
-      padding: 14px 32px;
-      font-size: 20px;
-      border-radius: 10px;
+      padding: 12px 28px;
+      font-size: 18px;
+      border-radius: 8px;
       border: none;
       cursor: pointer;
       margin: 10px;
@@ -42,61 +38,55 @@
     #yes {
       background: #22c55e;
       color: black;
-      font-weight: bold;
     }
 
-    /* NO image */
     #no {
-      width: 90px;
+      background: #ef4444;
+      color: white;
       position: absolute;
-      cursor: pointer;
-      transition: transform 0.15s ease;
-      z-index: 2;
     }
 
-    /* Modal overlay */
-    .overlay {
+    /* Dialog */
+    .dialog {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.75);
+      background: rgba(0,0,0,0.7);
       display: none;
       justify-content: center;
       align-items: center;
-      z-index: 10;
+      z-index: 5;
     }
 
-    .modal {
+    .dialog-box {
       background: #020617;
-      padding: 35px 40px;
-      border-radius: 16px;
+      padding: 30px;
+      border-radius: 12px;
       text-align: center;
-      animation: pop 0.3s ease;
-      box-shadow: 0 30px 80px rgba(0,0,0,0.7);
     }
 
-    .modal h2 {
-      margin-bottom: 20px;
+    /* Jet animation */
+    .jet {
+      position: fixed;
+      top: 40%;
+      left: -200px;
+      width: 150px;
+      display: none;
+      z-index: 3;
+      animation: fly 1.8s linear forwards;
     }
 
-    .modal button {
-      background: #22c55e;
-      color: black;
-      font-weight: bold;
-    }
-
-    @keyframes pop {
+    @keyframes fly {
       from {
-        transform: scale(0.7);
-        opacity: 0;
+        left: -200px;
+        transform: scale(0.8);
       }
       to {
-        transform: scale(1);
-        opacity: 1;
+        left: 110%;
+        transform: scale(1.2);
       }
     }
   </style>
 </head>
-
 <body>
 
   <div class="card">
@@ -104,56 +94,64 @@
     <button id="yes">YES</button>
   </div>
 
-  <!-- NO image -->
-  <img
-    id="no"
-    src="https://upload.wikimedia.org/wikipedia/commons/3/32/Flag_of_Pakistan.svg"
-    alt="NO"
-  />
+  <button id="no">NO</button>
 
-  <!-- Modal -->
-  <div class="overlay" id="overlay">
-    <div class="modal">
-      <h2>Of course 😄🇮🇳</h2>
-      <p>See you on 15th Feb 🏏🔥</p>
-      <button onclick="closeModal()">OK</button>
+  <!-- Dialog -->
+  <div class="dialog" id="dialog">
+    <div class="dialog-box">
+      <h2>Of course 😄</h2>
+      <p>Jet has taken off ✈️</p>
+      <button onclick="closeDialog()">Close</button>
     </div>
   </div>
 
-  <!-- Jet sound -->
-  <audio id="jetSound" preload="auto">
-    <source src="https://assets.mixkit.co/sfx/preview/mixkit-fast-rocket-whoosh-1714.mp3" type="audio/mpeg">
-  </audio>
+  <!-- Jet -->
+  <img src="jet.png" class="jet" id="jet" />
+
+  <!-- Audio -->
+  <audio id="jetSound" src="jet.mp3" preload="auto"></audio>
 
   <script>
-    const no = document.getElementById("no");
-    const yes = document.getElementById("yes");
+    const noBtn = document.getElementById("no");
+    const yesBtn = document.getElementById("yes");
+    const dialog = document.getElementById("dialog");
+    const jet = document.getElementById("jet");
     const jetSound = document.getElementById("jetSound");
-    const overlay = document.getElementById("overlay");
 
-    // NO runs away
-    no.addEventListener("mouseover", () => {
-      const x = Math.random() * (window.innerWidth - 120);
-      const y = Math.random() * (window.innerHeight - 120);
-      no.style.left = x + "px";
-      no.style.top = y + "px";
-      no.style.transform = "rotate(" + (Math.random() * 360) + "deg)";
+    // NO button movement
+    noBtn.addEventListener("mouseover", () => {
+      noBtn.style.left = Math.random() * (window.innerWidth - 100) + "px";
+      noBtn.style.top = Math.random() * (window.innerHeight - 50) + "px";
     });
 
     // YES click
-    yes.addEventListener("click", () => {
-      jetSound.currentTime = 0;
-      jetSound.play();
-      overlay.style.display = "flex";
+    yesBtn.addEventListener("click", async () => {
+      // Show dialog
+      dialog.style.display = "flex";
+
+      // Jet animation
+      jet.style.display = "block";
+      jet.style.animation = "none";
+      jet.offsetHeight; // reflow
+      jet.style.animation = "fly 1.8s linear forwards";
+
+      // Play sound (important)
+      try {
+        jetSound.currentTime = 0;
+        await jetSound.play();
+      } catch (e) {
+        console.log("Sound blocked:", e);
+      }
+
+      // Mobile vibration
+      if (navigator.vibrate) {
+        navigator.vibrate([200, 100, 200]);
+      }
     });
 
-    function closeModal() {
-      overlay.style.display = "none";
+    function closeDialog() {
+      dialog.style.display = "none";
     }
-
-    // Initial NO position
-    no.style.left = "60%";
-    no.style.top = "70%";
   </script>
 
 </body>
