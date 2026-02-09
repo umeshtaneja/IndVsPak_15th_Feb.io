@@ -1,158 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>India vs Pak 🇮🇳🇵🇰</title>
+<meta charset="UTF-8" />
+<title>India vs Pakistan 🇮🇳🇵🇰</title>
 
-  <style>
-    body {
-      height: 100vh;
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: linear-gradient(135deg, #7a0000, #c1121f);
-      font-family: Arial, sans-serif;
-      color: white;
-      overflow: hidden;
-      cursor: url("jet.png"), auto;
-    }
+<style>
+  body {
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #7a0000, #c1121f);
+    font-family: Arial, sans-serif;
+    color: white;
+    overflow: hidden;
+  }
 
-    .card {
-      text-align: center;
-      background: rgba(0,0,0,0.5);
-      padding: 40px;
-      border-radius: 16px;
-      z-index: 2;
-    }
+  .card {
+    background: rgba(0,0,0,0.6);
+    padding: 40px;
+    border-radius: 16px;
+    text-align: center;
+    z-index: 2;
+  }
 
-    button {
-      padding: 12px 28px;
-      font-size: 18px;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-      margin: 10px;
-    }
+  button {
+    padding: 12px 28px;
+    font-size: 18px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+  }
 
-    #yes {
-      background: #22c55e;
-      color: black;
-    }
+  #yes {
+    background: #22c55e;
+    font-weight: bold;
+  }
 
-    #no {
-      background: #ef4444;
-      color: white;
-      position: absolute;
-    }
+  /* NO as image */
+  #no {
+    position: absolute;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
 
-    /* Dialog */
-    .dialog {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.7);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 5;
-    }
+  #no img {
+    width: 80px;
+  }
 
-    .dialog-box {
-      background: #020617;
-      padding: 30px;
-      border-radius: 12px;
-      text-align: center;
-    }
+  /* Dialog */
+  .dialog {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
+  }
 
-    /* Jet animation */
-    .jet {
-      position: fixed;
-      top: 40%;
-      left: -200px;
-      width: 150px;
-      display: none;
-      z-index: 3;
-      animation: fly 1.8s linear forwards;
-    }
+  .dialog-box {
+    background: #020617;
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+  }
 
-    @keyframes fly {
-      from {
-        left: -200px;
-        transform: scale(0.8);
-      }
-      to {
-        left: 110%;
-        transform: scale(1.2);
-      }
-    }
-  </style>
+  /* Jet */
+  .jet {
+    position: fixed;
+    top: 40%;
+    left: -200px;
+    width: 160px;
+    display: none;
+    z-index: 3;
+    animation: fly 1.6s linear forwards;
+  }
+
+  @keyframes fly {
+    from { left: -200px; }
+    to { left: 110%; }
+  }
+</style>
 </head>
+
 <body>
 
-  <div class="card">
-    <h1>Will Pakistan play on 15th Feb? 🇮🇳🇵🇰</h1>
-    <button id="yes">YES</button>
+<div class="card">
+  <h1>Will Pakistan play on 15th Feb? 🇮🇳🇵🇰</h1>
+  <button id="yes">YES</button>
+</div>
+
+<button id="no">
+  <img src="pak-flag.png" alt="NO">
+</button>
+
+<div class="dialog" id="dialog">
+  <div class="dialog-box">
+    <h2>Of course 😄</h2>
+    <p>Jet has taken off ✈️</p>
+    <button onclick="closeDialog()">Close</button>
   </div>
+</div>
 
-  <button id="no">NO</button>
+<img src="jet.png" class="jet" id="jet">
 
-  <!-- Dialog -->
-  <div class="dialog" id="dialog">
-    <div class="dialog-box">
-      <h2>Of course 😄</h2>
-      <p>Jet has taken off ✈️</p>
-      <button onclick="closeDialog()">Close</button>
-    </div>
-  </div>
+<audio id="jetSound" src="jet.mp3"></audio>
 
-  <!-- Jet -->
-  <img src="jet.png" class="jet" id="jet" />
+<script>
+  const noBtn = document.getElementById("no");
+  const yesBtn = document.getElementById("yes");
+  const jetSound = document.getElementById("jetSound");
+  const dialog = document.getElementById("dialog");
+  const jet = document.getElementById("jet");
 
-  <!-- Audio -->
-  <audio id="jetSound" src="jet.mp3" preload="auto"></audio>
+  let audioUnlocked = false;
 
-  <script>
-    const noBtn = document.getElementById("no");
-    const yesBtn = document.getElementById("yes");
-    const dialog = document.getElementById("dialog");
-    const jet = document.getElementById("jet");
-    const jetSound = document.getElementById("jetSound");
-
-    // NO button movement
-    noBtn.addEventListener("mouseover", () => {
-      noBtn.style.left = Math.random() * (window.innerWidth - 100) + "px";
-      noBtn.style.top = Math.random() * (window.innerHeight - 50) + "px";
-    });
-
-    // YES click
-    yesBtn.addEventListener("click", async () => {
-      // Show dialog
-      dialog.style.display = "flex";
-
-      // Jet animation
-      jet.style.display = "block";
-      jet.style.animation = "none";
-      jet.offsetHeight; // reflow
-      jet.style.animation = "fly 1.8s linear forwards";
-
-      // Play sound (important)
-      try {
-        jetSound.currentTime = 0;
-        await jetSound.play();
-      } catch (e) {
-        console.log("Sound blocked:", e);
-      }
-
-      // Mobile vibration
-      if (navigator.vibrate) {
-        navigator.vibrate([200, 100, 200]);
-      }
-    });
-
-    function closeDialog() {
-      dialog.style.display = "none";
+  // 🔓 Unlock audio on first interaction (CRITICAL)
+  document.body.addEventListener("click", () => {
+    if (!audioUnlocked) {
+      jetSound.muted = true;
+      jetSound.play().then(() => {
+        jetSound.pause();
+        jetSound.muted = false;
+        audioUnlocked = true;
+      }).catch(() => {});
     }
-  </script>
+  }, { once: true });
+
+  // NO button runs away
+  noBtn.addEventListener("mouseenter", () => {
+    noBtn.style.left = Math.random() * (window.innerWidth - 100) + "px";
+    noBtn.style.top = Math.random() * (window.innerHeight - 100) + "px";
+  });
+
+  // YES click
+  yesBtn.addEventListener("click", () => {
+    dialog.style.display = "flex";
+
+    // Jet animation
+    jet.style.display = "block";
+    jet.style.animation = "none";
+    jet.offsetHeight;
+    jet.style.animation = "fly 1.6s linear forwards";
+
+    // 🔊 Sound (now works)
+    jetSound.currentTime = 0;
+    jetSound.play();
+
+    // 📳 Mobile vibration
+    if (navigator.vibrate) {
+      navigator.vibrate([200, 100, 200]);
+    }
+  });
+
+  function closeDialog() {
+    dialog.style.display = "none";
+  }
+</script>
 
 </body>
 </html>
