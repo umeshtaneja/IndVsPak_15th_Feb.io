@@ -1,24 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Ind vs Pak – 15 Feb</title>
+  <meta charset="UTF-8" />
+  <title>India vs Pak</title>
   <style>
     body {
-      background: #0b0b0b;
-      color: white;
       height: 100vh;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
+      background: #0f172a;
       font-family: Arial, sans-serif;
+      color: white;
+      overflow: hidden;
     }
-    h1 {
-      font-size: 3rem;
+    .card {
+      text-align: center;
+      background: #020617;
+      padding: 40px;
+      border-radius: 16px;
+    }
+    button {
+      padding: 12px 28px;
+      font-size: 18px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      margin: 10px;
+    }
+    #yes { background: #22c55e; }
+    #no {
+      background: #ef4444;
+      color: white;
+      position: absolute;
     }
   </style>
 </head>
 <body>
-  <h1>It worksssss 🎉</h1>
+
+  <div class="card">
+    <h1>Will Pakistan play on 15th Feb? 🇮🇳🇵🇰</h1>
+    <button id="yes" onclick="alert('Of course 😄')">YES</button>
+  </div>
+
+  <button id="no">NO</button>
+
+  <script>
+    const no = document.getElementById("no");
+    no.addEventListener("mouseover", () => {
+      no.style.left = Math.random() * (window.innerWidth - 100) + "px";
+      no.style.top = Math.random() * (window.innerHeight - 50) + "px";
+    });
+  </script>
+
 </body>
 </html>
